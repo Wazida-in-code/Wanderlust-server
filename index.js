@@ -24,11 +24,11 @@ const mongoClient = await connectToMongoDB()
 
 const db = mongoClient.db("wanderlust")
 const destinationCollection = db.collection("destination")
+const bookingCollection = db.collection("bookings")
 
 app.post('/add-destination', async(req, res) => {
     const data = req.body
     const result = await destinationCollection.insertOne(data)
-    console.log(result);
     res.send(result)
 })
 
@@ -61,6 +61,13 @@ app.delete('/destination/:id', async(req, res) => {
     res.json(result)
 })
 
+// Booking
+app.post('/booking', async(req, res) => {
+    const data = req.body
+    const result = await bookingCollection.insertOne(data)
+    res.send(result)
+    console.log(result);
+})
 
 app.get('/', (req, res) => {
     res.send({msg: "server is runing perfectly!"})
