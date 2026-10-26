@@ -69,6 +69,14 @@ app.post('/booking', async(req, res) => {
     console.log(result);
 })
 
+
+app.get('/my-bookings/:email', async(req, res) => {
+    const {email} = req.params
+    const result = await bookingCollection.find({email:email}).toArray()
+    res.send(result)
+})
+
+
 app.get('/', (req, res) => {
     res.send({msg: "server is runing perfectly!"})
 })
