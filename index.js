@@ -26,6 +26,21 @@ const db = mongoClient.db("wanderlust")
 const destinationCollection = db.collection("destination")
 const bookingCollection = db.collection("bookings")
 
+
+const verifyApi = (req, res, next) => {
+    const authHeader = req.headers.authorization;
+    console.log(authHeader);
+
+    if (authHeader !== 'user logged in!') {
+        return res.status(401).send({ msg: "Unauthorized!" })
+    }
+
+    console.log("I'm middleware");
+
+    next()
+}
+
+
 app.post('/add-destination', async(req, res) => {
     const data = req.body
     const result = await destinationCollection.insertOne(data)
@@ -38,7 +53,9 @@ app.get('/destinations', async (req, res) => {
 })
 
 
-app.get('/destination/:id', async(req, res) => {
+app.get('/destination/:id', verifyApi , 
+    
+    async(req, res) => {
     const {id} = req.params
     const result = await destinationCollection.findOne({_id: new ObjectId(id)})
     res.send(result)
