@@ -53,7 +53,7 @@ const verifyToken = async (req, res, next) => {
 }
 
 
-app.post('/add-destination', async(req, res) => {
+app.post('/add-destination', verifyToken , async(req, res) => {
     const data = req.body
     const result = await destinationCollection.insertOne(data)
     res.send(result)
@@ -74,7 +74,7 @@ app.get('/destination/:id', verifyToken ,
 })
 
 
-app.patch('/destination/:id', async(req, res) => {
+app.patch('/destination/:id', verifyToken, async(req, res) => {
     const {id} = req.params
     const updatedData = req.body
     const result = await destinationCollection.updateOne(
@@ -84,7 +84,7 @@ app.patch('/destination/:id', async(req, res) => {
 })
 
 
-app.delete('/destination/:id', async(req, res) => {
+app.delete('/destination/:id', verifyToken, async(req, res) => {
     const {id} = req.params
     const result = await destinationCollection.deleteOne({_id: new ObjectId(id)})
     res.json(result)
@@ -99,7 +99,7 @@ app.post('/booking', async(req, res) => {
 })
 
 
-app.get('/my-bookings/:email', async(req, res) => {
+app.get('/my-bookings/:email', verifyToken, async(req, res) => {
     const {email} = req.params
     const result = await bookingCollection.find({email:email}).toArray()
     res.send(result)
