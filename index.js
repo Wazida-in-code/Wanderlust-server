@@ -73,6 +73,11 @@ app.get('/destination/:id', verifyToken ,
     res.send(result)
 })
 
+app.get('/featured-destination', async(req, res) => {
+    const result = await destinationCollection.find().limit(5).toArray()
+    res.send(result)
+})
+
 
 app.patch('/destination/:id', verifyToken, async(req, res) => {
     const {id} = req.params
